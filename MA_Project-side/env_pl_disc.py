@@ -6,26 +6,27 @@ from gymnasium.spaces import Discrete
 from pettingzoo import ParallelEnv
 
 
-NUM_ITERS = 1000000
+NUM_ITERS = 1000000000
 
-LIST = []
+ETA = 0.1
 
-lbound = 1.5
-hbound = 2
+PNASH = 1.47293
+PMONOP = 1.92498
+
+LBOUND = PNASH - ETA*(PMONOP - PNASH)
+#LBOUND = 1
+HBOUND = PMONOP + ETA*(PMONOP - PNASH)
 
 NUM_AGENTS = 2
 ##Mapping played actions to rewards
-NUM_PRICES = 5
-MOVES = list(range(NUM_PRICES))
-OBSERVATIONS = list(itertools.product(MOVES, repeat=NUM_AGENTS))
+NUM_PRICES = 15
+#MOVES = list(range(NUM_PRICES))
+#OBSERVATIONS = list(itertools.product(MOVES, repeat=NUM_AGENTS))
 
-MOVESc = np.linspace(lbound, hbound, NUM_PRICES)
+#MOVESc = np.linspace(lbound, hbound, NUM_PRICES)
 
-A = 2
-MY = 1/4
-Cost = 1
-
-NONE = 0
+#A = 2
+#MY = 1/4
 
 
 
@@ -33,7 +34,7 @@ class parallel_env(ParallelEnv):
 
     metadata = {"render_modes": ["human"], "name": "dp_env_pl_2"}
 
-    def __init__(self, render_mode=None):
+    def __init__(self, render_mode=None, num_prices = NUM_PRICES):
         self.possible_agents = ["player_" + str(r) for r in range(NUM_AGENTS)]
 
         # optional: a mapping between agent name and ID
@@ -44,15 +45,19 @@ class parallel_env(ParallelEnv):
         #self.steps = 0
         self.a = 2
         self.my = 1 / 4
-        self.observation_mapping = {comb: idx for idx, comb in enumerate(OBSERVATIONS)}
+        self.c = 1
+        self.num_prices = num_prices
+        self.observations = list(itertools.product(list(range(num_prices)), repeat=NUM_AGENTS))
+        self.movesc = np.linspace(LBOUND, HBOUND, num_prices)
+        self.observation_mapping = {comb: idx for idx, comb in enumerate(self.observations)}
 
     @functools.lru_cache(maxsize=None)
     def observation_space(self, agent):
-        return Discrete(len(OBSERVATIONS)+1)
+        return Discrete(len(self.observations))
 
     @functools.lru_cache(maxsize=None)
     def action_space(self, agent):
-        return Discrete(NUM_PRICES)
+        return Discrete(self.num_prices)
 
     def render(self):
         pass
@@ -67,8 +72,7 @@ class parallel_env(ParallelEnv):
         self.terminations = {agent: False for agent in self.agents}
         self.truncations = {agent: False for agent in self.agents}
         infos = {agent: {} for agent in self.agents}
-        observations = {agent: NONE for agent in self.agents}
-        self.state = observations
+        observations = {agent: 0 for agent in self.agents}
 
         return observations, infos
 
@@ -79,16 +83,15 @@ class parallel_env(ParallelEnv):
             self.agents = []
             return {}, {}, {}, {}, {}
 
-        actions_c = {agent: MOVESc[actions[agent]] for agent in self.agents}
+        actions_c = {agent: self.movesc[actions[agent]] for agent in self.agents}
         # rewards for all agents are placed in the rewards dictionary to be returned
 
         for agent in self.agents:
             pi = actions_c[agent]
             pj = actions_c[self.agents[1 - self.agent_name_mapping[agent]]]
             demand = (np.e ** ((self.a - pi) / self.my)) / (
-                        np.e ** ((self.a - pi) / self.my) + np.e ** ((self.a - pj) / self.my))
-            rewards[agent] = demand * (pi - Cost)
-            # print("pi:", pi, "pj:", pj, "demand:", demand, "reward:", rewards[agent], "actions:", actions, "actions:", actions_c)
+                        np.e ** ((self.a - pi) / self.my) + np.e ** ((self.a - pj) / self.my)+1)
+            rewards[agent] = float(demand * (pi - self.c))
 
         observations = {agent: self.observation_mapping[(actions[agent], actions[self.agents[1 - self.agent_name_mapping[agent]]])] for agent in self.agents}
 
@@ -97,6 +100,7 @@ class parallel_env(ParallelEnv):
         infos = {agent: {} for agent in self.agents}
 
         self.num_moves += 1
+
         if self.num_moves >= NUM_ITERS:
             self.agents = []
 
