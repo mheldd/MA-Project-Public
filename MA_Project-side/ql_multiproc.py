@@ -5,13 +5,17 @@ import random
 
 #nash: 4.683105308334808
 #average: 5.930776309195112
-
+Tables = []
 ALPHA = 0.15
-BETA = (10**(-4))
+BETA = (10**(-6))
 DELTA = 0.95
-Q_FILL_VALUE = 0
-NUM_PRICES = 2
+Q_FILL_VALUE = 4.683105308334808
+NUM_PRICES = 15
 NUM_OBS = NUM_PRICES**2
+Imp_res = True
+
+
+
 
 def run_session(session_id, env):
     observations, infos = env.reset()
@@ -49,26 +53,64 @@ def run_session(session_id, env):
             conv = True
 
         if conv == True:
-            last_ten_actions.append(actions)
-
-            for agent in agents:
-                last_ten_rewards[agent] += rewards[agent]
-            i += 1
-            if i >= 10:
+            if Imp_res:
                 for agent in agents:
-                    last_ten_rewards[agent] = last_ten_rewards[agent]/10
-                    print(ql_tables[agent].num_moves)
-                    print(ql_tables[agent].q_values, agent, session_id)
+                    explo_test(ql_tables, agent, observations, states, env)
                 env.agents = []
+
+
+            else:
+                if i == 0:
+                    for agent in agents:
+                        Tables.append(ql_tables[agent].q_values)
+
+                last_ten_actions.append(actions)
+
+                for agent in agents:
+                    last_ten_rewards[agent] += rewards[agent]
+                i += 1
+                if i >= 10:
+                    for agent in agents:
+                        last_ten_rewards[agent] = last_ten_rewards[agent]/10
+                        print(ql_tables[agent].num_moves)
+                        #print(ql_tables[agent].q_values, agent, session_id)
+                    env.agents = []
 
 
     env.close()
 
 
-    return f"Session {session_id} complete", last_ten_actions, last_ten_rewards
+    return f"Session {session_id} complete", last_ten_actions, last_ten_rewards, Tables
+
+def explo_test(ql_tables, agent, observations, states, env):
+
+    if agent == 'player_0':
+        exploiter = 'player_1'
+
+    else:
+        exploiter = 'player_0'
+
+    agents = env.possible_agents
+    actions = {a: 99 for a in agents}
+    tot_rewards = {a: 0 for a in agents}
+
+    for i in range(100000):
+        actions[agent] = ql_tables[agent].get_action(observations[agent])
+        ql_tables[agent].decay_epsilon()
+        actions[exploiter] = random.randint(0,2)
+        print(actions)
+
+        observations, rewards, termination, truncation, infos = env.step(actions)
+        for a in agents:
+            tot_rewards[a] += rewards[a]
+        ql_tables[agent].update(states[agent], observations[agent], actions[agent], rewards[agent], termination)
+
+        states = observations
+
+    print('exploiter:', exploiter, tot_rewards)
 
 def main():
-    num_sessions = 6
+    num_sessions = 1
     env = env_pl_disc.parallel_env(render_mode=None, num_prices= NUM_PRICES)
 
     with multiprocessing.Pool(processes=num_sessions) as pool:
@@ -82,6 +124,8 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+    #exploitation_test(0, env_pl_disc.parallel_env(render_mode=None, num_prices= NUM_PRICES))
 
 
 
