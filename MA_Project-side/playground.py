@@ -60,3 +60,9 @@ print(rewards/((1-delta)))
 #print(np.e**(-((10**(-4))*10000)))
 
 
+print(range(NUM_PRICES))
+
+print(np.linspace(2*10**(-5), 0, 100))
+
+#möglicher grid: 1.5*10**(-5), 10**(-5), 5.25*10**(-6)
+#oder minimum 2*10**-5 als Ausgnagspunkt nehmen und dann bisschen erhöhen
