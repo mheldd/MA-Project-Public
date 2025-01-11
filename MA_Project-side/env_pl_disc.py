@@ -14,21 +14,10 @@ PNASH = 1.47293
 PMONOP = 1.92498
 
 LBOUND = PNASH - ETA*(PMONOP - PNASH)
-#LBOUND = 1
 HBOUND = PMONOP + ETA*(PMONOP - PNASH)
 
 NUM_AGENTS = 2
-##Mapping played actions to rewards
 NUM_PRICES = 15
-#MOVES = list(range(NUM_PRICES))
-#OBSERVATIONS = list(itertools.product(MOVES, repeat=NUM_AGENTS))
-
-#MOVESc = np.linspace(lbound, hbound, NUM_PRICES)
-
-#A = 2
-#MY = 1/4
-
-
 
 class parallel_env(ParallelEnv):
 
@@ -36,13 +25,11 @@ class parallel_env(ParallelEnv):
 
     def __init__(self, render_mode=None, num_prices = NUM_PRICES):
         self.possible_agents = ["player_" + str(r) for r in range(NUM_AGENTS)]
-
-        # optional: a mapping between agent name and ID
         self.agent_name_mapping = dict(
             zip(self.possible_agents, list(range(len(self.possible_agents))))
         )
         self.render_mode = render_mode
-        #self.steps = 0
+        self.num_moves = 0
         self.a = 2
         self.my = 1 / 4
         self.c = 1
@@ -104,7 +91,5 @@ class parallel_env(ParallelEnv):
         if self.num_moves >= NUM_ITERS:
             self.agents = []
 
-        if self.render_mode == "human":
-            self.render()
 
         return observations, rewards, terminations, truncations, infos

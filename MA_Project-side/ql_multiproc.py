@@ -15,9 +15,6 @@ NUM_PRICES = 15
 NUM_OBS = NUM_PRICES**2
 
 
-
-
-
 def run_session(session_id, env, alpha, beta, imp_res, exploit):
     observations, infos = env.reset()
     agents = env.possible_agents
