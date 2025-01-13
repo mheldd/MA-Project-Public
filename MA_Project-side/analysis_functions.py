@@ -4,9 +4,11 @@ import random
 
 def conv_logging(ql_tables, observations, states, actions, env):
     check_duration = 10
-    record = np.zeros((check_duration, 4), dtype=np.float32)
     agents = env.possible_agents
     actions = actions
+
+    record = np.zeros((check_duration, 4), dtype=np.float32)
+
 
     for i in range(0, check_duration):
         for agent in agents:
@@ -24,8 +26,9 @@ def conv_logging(ql_tables, observations, states, actions, env):
 
         states = observations
 
-    print(env.num_moves)
-    print(record)
+    return record
+
+
 
 
 ##Function for the impulse response analysis. Gets called when a session is converged.
@@ -58,6 +61,7 @@ def impulse_response(ql_tables, observations, states, actions, env, dev_action):
         states = observations
 
     print(record)
+    return record
 
 #Function for the exploitation analysis. Gets called when a session is converged.
 def explo_test(ql_tables, observations, states, actions, env, random_strat):
@@ -120,3 +124,5 @@ def explo_test(ql_tables, observations, states, actions, env, random_strat):
     record[3,:] = exploiter
     print(record)
     print('exploiter:', exploit_agent, tot_rewards, periods)
+
+    return record

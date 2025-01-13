@@ -4,12 +4,13 @@ import analysis_functions
 
 import multiprocessing
 import random
+from multiprocessing import Manager
 
 # nash: 4.683105308334808
 # average: 5.930776309195112
 
-ALPHA = 0.2
-BETA = 7*(10 ** (-6))
+ALPHA = 0.125
+BETA = 2*(10 ** (-5))
 DELTA = 0.95
 Q_FILL_VALUE = 5.930776309195112
 NUM_PRICES = 15
@@ -17,7 +18,7 @@ NUM_OBS = NUM_PRICES ** 2
 
 
 
-def run_session(session_id, env, alpha, beta, imp_res, exploit, dev_action, random_strat):
+def run_session(session_id, env, alpha, beta, imp_res, exploit, dev_action, random_strat, storage):
 
     observations, infos = env.reset()
     agents = env.possible_agents
@@ -53,17 +54,19 @@ def run_session(session_id, env, alpha, beta, imp_res, exploit, dev_action, rand
 
         if conv:
             if imp_res:
-                analysis_functions.impulse_response(ql_tables, observations, states,actions , env, dev_action)
+                data = analysis_functions.impulse_response(ql_tables, observations, states,actions , env, dev_action)
                 env.agents = []
 
             elif exploit:
-                analysis_functions.explo_test(ql_tables, observations, states, actions, env, random_strat)
+                data = analysis_functions.explo_test(ql_tables, observations, states, actions, env, random_strat)
                 env.agents = []
 
             else:
-                analysis_functions.conv_logging(ql_tables, observations, states, actions, env)
+                data = analysis_functions.conv_logging(ql_tables, observations, states, actions, env)
                 env.agents = []
 
+            result = {"session_id": session_id, "data": data, "periods": env.num_moves}
+            storage.append(result)
     env.close()
 
 
@@ -76,20 +79,27 @@ def main(alpha=ALPHA, beta=BETA, imp_res=False, exploit=False, dev_action = 0, r
 
     env = env_pl_disc.parallel_env(render_mode=None, num_prices=NUM_PRICES)
 
-    with multiprocessing.Pool(processes=num_sessions) as pool:
-        results = pool.starmap(
-            run_session,
-            [(i, env, alpha, beta, imp_res, exploit, dev_action, random_strat) for i in range(num_sessions)],
-        )
-        print(results)
+    with Manager() as manager:
+        storage = manager.list()
+        with multiprocessing.Pool(processes=num_sessions) as pool:
+            pool.starmap(
+                run_session,
+                [(i, env, alpha, beta, imp_res, exploit, dev_action, random_strat, storage) for i in range(num_sessions)],
+            )
+        results = list(storage)
+
+    return results
 
 
 
 if __name__ == "__main__":
-    main(exploit = True, num_sessions = 3, random_strat = False)
+
+    data = main(num_sessions = 3)
+    print(data)
+
     #print(np.load("actions_record.npy"))
 
-    # exploitation_test(0, env_pl_disc.parallel_env(render_mode=None, num_prices= NUM_PRICES))
+
 
 
 
