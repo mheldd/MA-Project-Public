@@ -1,3 +1,5 @@
+import numpy as np
+
 import ql_agent
 import env_pl_disc
 import analysis_functions
@@ -9,8 +11,9 @@ from multiprocessing import Manager
 # nash: 4.683105308334808
 # average: 5.930776309195112
 
-ALPHA = 0.125
-BETA = 2*(10 ** (-5))
+ALPHA = [0.1, 0.125, 0.15]
+#BETA = [2*(10 ** (-5)), 10 ** (-5), 7*(10 ** (-6))]
+BETA = [10**(-3), 10**(-4)]
 DELTA = 0.95
 Q_FILL_VALUE = 5.930776309195112
 NUM_PRICES = 15
@@ -65,7 +68,11 @@ def run_session(session_id, env, alpha, beta, imp_res, exploit, dev_action, rand
                 data = analysis_functions.conv_logging(ql_tables, observations, states, actions, env)
                 env.agents = []
 
-            result = {"session_id": session_id, "data": data, "periods": env.num_moves}
+
+            info =  np.array([[999, 999], [session_id, session_id], [env.num_moves, env.num_moves]])
+            result = np.concatenate((data, info))
+            print(result.shape)
+            #result = {"session_id": session_id, "data": data, "periods": env.num_moves}
             storage.append(result)
     env.close()
 
@@ -75,7 +82,7 @@ def run_session(session_id, env, alpha, beta, imp_res, exploit, dev_action, rand
 
 
 
-def main(alpha=ALPHA, beta=BETA, imp_res=False, exploit=False, dev_action = 0, random_strat = False, num_sessions = 1):
+def main(alpha, beta, imp_res, exploit, dev_action, random_strat, num_sessions):
 
     env = env_pl_disc.parallel_env(render_mode=None, num_prices=NUM_PRICES)
 
@@ -94,8 +101,13 @@ def main(alpha=ALPHA, beta=BETA, imp_res=False, exploit=False, dev_action = 0, r
 
 if __name__ == "__main__":
 
-    data = main(num_sessions = 3)
-    print(data)
+    for a in ALPHA:
+        for b in BETA:
+            data = main(alpha=a, beta=b, imp_res=True, exploit=False, dev_action = 0, random_strat = False, num_sessions = 1)
+            info = np.array([[a, b]])
+            final = np.concatenate((data, info))
+            np.savetxt(f"results/{a, b}.csv", final, delimiter=",")
+
 
     #print(np.load("actions_record.npy"))
 

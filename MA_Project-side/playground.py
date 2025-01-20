@@ -4,6 +4,7 @@ import numpy   as np
 
 ETA = 0.1
 
+print(range(1))
 PNASH = 1.47293
 PMONOP = 1.92498
 

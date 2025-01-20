@@ -50,8 +50,6 @@ def impulse_response(ql_tables, observations, states, actions, env, dev_action):
             for agent in agents:
                 actions[agent] = ql_tables[agent].get_action(observations[agent])
 
-        print(actions)
-
         observations, rewards, termination, truncation, infos = env.step(actions)
 
         for agent in agents:
@@ -60,13 +58,13 @@ def impulse_response(ql_tables, observations, states, actions, env, dev_action):
 
         states = observations
 
-    print(record)
     return record
 
 #Function for the exploitation analysis. Gets called when a session is converged.
 def explo_test(ql_tables, observations, states, actions, env, random_strat):
 
-    record = np.zeros((4,1), dtype=np.int64)
+    check_duration = 150
+    record = np.zeros((check_duration+3, 2), dtype=np.int64)
 
     agents = env.possible_agents
     exploiter = random.randint(0, 1)
@@ -103,6 +101,8 @@ def explo_test(ql_tables, observations, states, actions, env, random_strat):
 
         for a in agents:
             tot_rewards[a] += rewards[a]
+            if periods <= check_duration:
+                record[i, env.agent_name_mapping[a]] = actions[a] if actions[a] is not None else -1
         ql_tables[q_agent].update(states[q_agent], observations[q_agent], actions[q_agent], rewards[q_agent], termination)
 
         states = observations
@@ -117,12 +117,10 @@ def explo_test(ql_tables, observations, states, actions, env, random_strat):
 
         periods += 1
 
+    record[check_duration, :] = periods
+    record[check_duration+1, :] = exploiter
+    record[check_duration+2, 0] = tot_rewards[agents[0]]
+    record[check_duration+2, 1] = tot_rewards[agents[1]]
 
-    for i in range(1):
-        record[i, :] = tot_rewards[agents[i]]
-    record[2,:] = periods
-    record[3,:] = exploiter
-    print(record)
-    print('exploiter:', exploit_agent, tot_rewards, periods)
 
     return record

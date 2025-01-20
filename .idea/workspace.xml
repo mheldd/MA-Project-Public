@@ -4,10 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e0674133-00d5-4ab9-b2d9-26747e2c765e" name="Changes" comment="new update, test now new main. put impulse response and other functions in separate fails, lets rödel!">
-      <change afterPath="$PROJECT_DIR$/MA_Project-side/data_saving.py" afterDir="false" />
+    <list default="true" id="e0674133-00d5-4ab9-b2d9-26747e2c765e" name="Changes" comment="Added multiprocessing manager to save data of individual sessions.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MA_Project-side/analysis_functions.py" beforeDir="false" afterPath="$PROJECT_DIR$/MA_Project-side/analysis_functions.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MA_Project-side/playground.py" beforeDir="false" afterPath="$PROJECT_DIR$/MA_Project-side/playground.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MA_Project-side/test.py" beforeDir="false" afterPath="$PROJECT_DIR$/MA_Project-side/test.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -94,7 +94,8 @@
       <workItem from="1736453488673" duration="191000" />
       <workItem from="1736522612156" duration="2666000" />
       <workItem from="1736587244163" duration="6738000" />
-      <workItem from="1736775872996" duration="2199000" />
+      <workItem from="1736775872996" duration="2280000" />
+      <workItem from="1737387747407" duration="4301000" />
     </task>
     <task id="LOCAL-00001" summary="init">
       <option name="closed" value="true" />
@@ -128,7 +129,15 @@
       <option name="project" value="LOCAL" />
       <updated>1736615451149</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Added multiprocessing manager to save data of individual sessions.">
+      <option name="closed" value="true" />
+      <created>1736778154172</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1736778154172</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -137,15 +146,16 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="init" />
     <MESSAGE value="new update, test now new main. put impulse response and other functions in separate fails, lets rödel!" />
-    <option name="LAST_COMMIT_MESSAGE" value="new update, test now new main. put impulse response and other functions in separate fails, lets rödel!" />
+    <MESSAGE value="Added multiprocessing manager to save data of individual sessions." />
+    <option name="LAST_COMMIT_MESSAGE" value="Added multiprocessing manager to save data of individual sessions." />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/MA$logging.coverage" NAME="logging Coverage Results" MODIFIED="1736590039760" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/MA_Project-side" />
     <SUITE FILE_PATH="coverage/MA$ql_agent.coverage" NAME="ql_agent Coverage Results" MODIFIED="1736416316962" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/MA_Project-side" />
     <SUITE FILE_PATH="coverage/MA$ql_multiproc.coverage" NAME="ql_multiproc Coverage Results" MODIFIED="1736592564049" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/MA_Project-side" />
     <SUITE FILE_PATH="coverage/MA$single_sesh.coverage" NAME="single_sesh Coverage Results" MODIFIED="1736450334505" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/MA_Project-side" />
-    <SUITE FILE_PATH="coverage/MA$analysis_functions.coverage" NAME="analysis_functions Coverage Results" MODIFIED="1736611953514" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/MA_Project-side" />
-    <SUITE FILE_PATH="coverage/MA$test.coverage" NAME="test Coverage Results" MODIFIED="1736777939149" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/MA_Project-side" />
-    <SUITE FILE_PATH="coverage/MA$playground.coverage" NAME="playground Coverage Results" MODIFIED="1736614101805" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/MA_Project-side" />
+    <SUITE FILE_PATH="coverage/MA$analysis_functions.coverage" NAME="analysis_functions Coverage Results" MODIFIED="1737389444543" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/MA_Project-side" />
+    <SUITE FILE_PATH="coverage/MA$test.coverage" NAME="test Coverage Results" MODIFIED="1737391747973" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/MA_Project-side" />
+    <SUITE FILE_PATH="coverage/MA$playground.coverage" NAME="playground Coverage Results" MODIFIED="1737388686604" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/MA_Project-side" />
   </component>
 </project>
