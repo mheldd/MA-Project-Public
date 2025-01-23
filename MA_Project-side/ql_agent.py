@@ -65,11 +65,15 @@ class QLAgent:
         terminated: bool,
     ):
 
+        ##save best action given former observation to check for convergence below. This should be equal to action if the agent did not explore in a period.
+        former_best_action = int(np.argmax(self.q_values[former_observation]))
+
         ##update the q-value corresponding to the former observation and the chosen action
         self.q_values[former_observation, action] = self.learning_rate*(reward + self.discount_factor*np.max(self.q_values[observation])) + (1-self.learning_rate)*self.q_values[former_observation, action]
 
         ##increase the convergence count if the optimal response has not changed after updating
-        if action == int(np.argmax(self.q_values[former_observation])):
+        #if action == int(np.argmax(self.q_values[former_observation])):        ##old condition. Would also reset count if strategies are unchanged but another action is chosen due to exploration
+        if former_best_action == int(np.argmax(self.q_values[former_observation])):
             self.conv_count += 1
         else:
             self.conv_count = 0

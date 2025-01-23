@@ -3,11 +3,11 @@ import random
 
 
 def conv_logging(ql_tables, observations, states, actions, env):
-    check_duration = 10
+    check_duration = 15
     agents = env.possible_agents
     actions = actions
 
-    record = np.zeros((check_duration, 4), dtype=np.float32)
+    record = np.zeros((check_duration, 2), dtype=np.float32)
 
 
     for i in range(0, check_duration):
@@ -17,11 +17,9 @@ def conv_logging(ql_tables, observations, states, actions, env):
 
         observations, rewards, termination, truncation, infos = env.step(actions)
 
-        #save actions of agents to column 0 and 1 and rewards to column 2 and 3
+        #save actions of agents to column 0 and 1
         for agent in agents:
             record[i, env.agent_name_mapping[agent]] = actions[agent] if actions[agent] is not None else -1
-            record[i, env.agent_name_mapping[agent]+2] = rewards[agent] if rewards[agent] is not None else -1
-
             ql_tables[agent].update(states[agent], observations[agent], actions[agent], rewards[agent], termination)
 
         states = observations
@@ -32,20 +30,23 @@ def conv_logging(ql_tables, observations, states, actions, env):
 
 
 ##Function for the impulse response analysis. Gets called when a session is converged.
-def impulse_response(ql_tables, observations, states, actions, env, dev_action):
+def impulse_response(ql_tables, observations, states, actions, env, dev_action, dev_duration):
 
     agents = env.possible_agents
     actions = actions
-    deviator = random.randint(0, 1)
+    deviator = agents[0]
+    q_player = agents[1]
 
-    check_duration = 15
-    record = np.zeros((check_duration, 2), dtype=np.float32)
+    conv_check_duration = 15
+    response_check_duration = 150
+    total_duration = conv_check_duration+response_check_duration
+    record = np.zeros((total_duration, 2), dtype=np.int64)
 
-    for i in range(0, check_duration):
-        if i == 2:
-            actions[agents[deviator]] = dev_action
-            actions[agents[1 - deviator]] = ql_tables[agents[1 - deviator]].get_action(
-                observations[agents[1 - deviator]])
+    for i in range(0, total_duration):
+        if conv_check_duration < i <= conv_check_duration+dev_duration:
+            actions[deviator] = dev_action
+            actions[q_player] = ql_tables[q_player].get_action(
+                observations[q_player])
         else:
             for agent in agents:
                 actions[agent] = ql_tables[agent].get_action(observations[agent])
@@ -61,21 +62,16 @@ def impulse_response(ql_tables, observations, states, actions, env, dev_action):
     return record
 
 #Function for the exploitation analysis. Gets called when a session is converged.
-def explo_test(ql_tables, observations, states, actions, env, random_strat):
-
-    check_duration = 150
-    record = np.zeros((check_duration+3, 2), dtype=np.int64)
+def explo_test(ql_tables, observations, states, actions, env, dev_action, random_strat):
+    conv_check_duration = 15
+    response_check_duration = 150
+    total_check_duration = conv_check_duration + response_check_duration
+    record = np.zeros((total_check_duration+2, 2), dtype=np.int64)
 
     agents = env.possible_agents
-    exploiter = random.randint(0, 1)
 
-    if exploiter == 0:
-        exploit_agent = agents[0]
-        q_agent = agents[1]
-
-    else:
-        exploit_agent = agents[1]
-        q_agent = agents[0]
+    exploit_agent = agents[0]
+    q_agent = agents[1]
 
     periods = 0
     end_count = 0
@@ -84,25 +80,32 @@ def explo_test(ql_tables, observations, states, actions, env, random_strat):
     if random_strat:
         end_threshold = 2
 
-    actions = actions
     tot_rewards = {a: 0 for a in agents}
 
 
     for i in range(500000):
-        actions[q_agent] = ql_tables[q_agent].get_action(observations[q_agent])
-        ql_tables[q_agent].decay_epsilon()
-
-        if random_strat:
-            actions[exploit_agent] = random.randint(0, 2)
+        if i < conv_check_duration:
+            for a in agents:
+                actions[a] = ql_tables[a].get_action(observations[a])
+                ql_tables[a].decay_epsilon()
         else:
-            actions[exploit_agent] = 0
+            actions[q_agent] = ql_tables[q_agent].get_action(observations[q_agent])
+            ql_tables[q_agent].decay_epsilon()
+            if random_strat:
+                actions[exploit_agent] = random.randint(0, 2)
+            else:
+                actions[exploit_agent] = dev_action
 
         observations, rewards, termination, truncation, infos = env.step(actions)
 
         for a in agents:
-            tot_rewards[a] += rewards[a]
-            if periods <= check_duration:
+            #store sum of rewards after the deviation
+            if i >= conv_check_duration:
+                tot_rewards[a] += rewards[a]
+            #store the first 150 actions after the deviation
+            if periods <= total_check_duration:
                 record[i, env.agent_name_mapping[a]] = actions[a] if actions[a] is not None else -1
+
         ql_tables[q_agent].update(states[q_agent], observations[q_agent], actions[q_agent], rewards[q_agent], termination)
 
         states = observations
@@ -117,10 +120,9 @@ def explo_test(ql_tables, observations, states, actions, env, random_strat):
 
         periods += 1
 
-    record[check_duration, :] = periods
-    record[check_duration+1, :] = exploiter
-    record[check_duration+2, 0] = tot_rewards[agents[0]]
-    record[check_duration+2, 1] = tot_rewards[agents[1]]
+    record[total_check_duration, :] = periods - conv_check_duration - end_crit
+    record[total_check_duration+1, 0] = tot_rewards[agents[0]]
+    record[total_check_duration+1, 1] = tot_rewards[agents[1]]
 
 
     return record

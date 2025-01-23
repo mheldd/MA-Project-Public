@@ -11,9 +11,9 @@ from multiprocessing import Manager
 # nash: 4.683105308334808
 # average: 5.930776309195112
 
-ALPHA = [0.1, 0.125, 0.15]
+ALPHA = [0.1, 0.125]#, 0.15]
 #BETA = [2*(10 ** (-5)), 10 ** (-5), 7*(10 ** (-6))]
-BETA = [10**(-3), 10**(-4)]
+BETA = [10**(-3), 2*(10**(-5))]
 DELTA = 0.95
 Q_FILL_VALUE = 5.930776309195112
 NUM_PRICES = 15
@@ -21,7 +21,7 @@ NUM_OBS = NUM_PRICES ** 2
 
 
 
-def run_session(session_id, env, alpha, beta, imp_res, exploit, dev_action, random_strat, storage):
+def run_session(session_id, env, alpha, beta, imp_res, exploit, dev_action, dev_duration, random_strat, storage):
 
     observations, infos = env.reset()
     agents = env.possible_agents
@@ -57,23 +57,23 @@ def run_session(session_id, env, alpha, beta, imp_res, exploit, dev_action, rand
 
         if conv:
             if imp_res:
-                data = analysis_functions.impulse_response(ql_tables, observations, states,actions , env, dev_action)
+                output = analysis_functions.impulse_response(ql_tables, observations, states, actions, env, dev_action, dev_duration)
                 env.agents = []
 
             elif exploit:
-                data = analysis_functions.explo_test(ql_tables, observations, states, actions, env, random_strat)
+                output = analysis_functions.explo_test(ql_tables, observations, states, actions, env, dev_action, random_strat)
                 env.agents = []
 
             else:
-                data = analysis_functions.conv_logging(ql_tables, observations, states, actions, env)
+                output = analysis_functions.conv_logging(ql_tables, observations, states, actions, env)
                 env.agents = []
 
 
-            info =  np.array([[999, 999], [session_id, session_id], [env.num_moves, env.num_moves]])
-            result = np.concatenate((data, info))
-            print(result.shape)
-            #result = {"session_id": session_id, "data": data, "periods": env.num_moves}
+            info_id = np.full((output.shape[0], 1), session_id)
+            info_moves = np.full((output.shape[0], 1), env.num_moves)
+            result = np.hstack((output, info_id, info_moves))
             storage.append(result)
+
     env.close()
 
 
@@ -82,7 +82,7 @@ def run_session(session_id, env, alpha, beta, imp_res, exploit, dev_action, rand
 
 
 
-def main(alpha, beta, imp_res, exploit, dev_action, random_strat, num_sessions):
+def main(alpha, beta, imp_res, exploit, dev_action, dev_duration, random_strat, num_sessions):
 
     env = env_pl_disc.parallel_env(render_mode=None, num_prices=NUM_PRICES)
 
@@ -91,9 +91,10 @@ def main(alpha, beta, imp_res, exploit, dev_action, random_strat, num_sessions):
         with multiprocessing.Pool(processes=num_sessions) as pool:
             pool.starmap(
                 run_session,
-                [(i, env, alpha, beta, imp_res, exploit, dev_action, random_strat, storage) for i in range(num_sessions)],
+                [(i, env, alpha, beta, imp_res, exploit, dev_action, dev_duration, random_strat, storage) for i in range(num_sessions)],
             )
-        results = list(storage)
+
+        results = np.vstack(storage)
 
     return results
 
@@ -101,15 +102,32 @@ def main(alpha, beta, imp_res, exploit, dev_action, random_strat, num_sessions):
 
 if __name__ == "__main__":
 
-    for a in ALPHA:
-        for b in BETA:
-            data = main(alpha=a, beta=b, imp_res=True, exploit=False, dev_action = 0, random_strat = False, num_sessions = 1)
-            info = np.array([[a, b]])
-            final = np.concatenate((data, info))
-            np.savetxt(f"results/{a, b}.csv", final, delimiter=",")
+    #data = main(alpha=0.125, beta=2*(10 ** (-5)), imp_res=False, exploit=False, dev_action = 0, random_strat = False, num_sessions = 6)
+    #print(data)
+
+    #basic looping through parameters
+    #for a in ALPHA:
+        #for b in BETA:
+            #data = main(alpha=a, beta=b, imp_res=False, exploit=False, dev_action=0, random_strat=False, num_sessions=2)
+            #np.savetxt(f"results_A/a_{a}_b_{b}_all.csv", data, delimiter=",")
+
+    #create pilot data for each experiment
+    a = 0.125
+    b = 2*(10**(-5))
+
+    ##convergence
+    #data = main(alpha=a, beta=b, imp_res=False, exploit=False, dev_action=1, dev_duration= 1, random_strat=False, num_sessions=2)
+    #np.savetxt(f"results_conv/a_{a}_b_{b}_all.csv", data, delimiter=",", fmt='%d')
+
+    ##impulse response
+    data = main(alpha=a, beta=b, imp_res=True, exploit=False, dev_action=1, dev_duration = 5, random_strat=False, num_sessions=2)
+    np.savetxt(f"results_imp_res/a_{a}_b_{b}_all.csv", data, delimiter=",", fmt='%d')
+
+    ##permanent deviation
+    #data = main(alpha=a, beta=b, imp_res=False, exploit=True, dev_action=1, dev_duration= 1, random_strat=False, num_sessions=2)
+    #np.savetxt(f"results_perm_dev/a_{a}_b_{b}_all.csv", data, delimiter=",", fmt='%d')
 
 
-    #print(np.load("actions_record.npy"))
 
 
 
