@@ -10,6 +10,7 @@ from multiprocessing import Manager
 
 # nash: 4.683105308334808
 # average: 5.930776309195112
+#forgit
 
 ALPHA = [0.1, 0.125]  # , 0.15]
 # BETA = [2*(10 ** (-5)), 10 ** (-5), 7*(10 ** (-6))]
