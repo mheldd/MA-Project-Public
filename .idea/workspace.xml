@@ -6,8 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="e0674133-00d5-4ab9-b2d9-26747e2c765e" name="Changes" comment="Standardized and finalized data storage for all functions!">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MA_Project-side/analysis_functions.py" beforeDir="false" afterPath="$PROJECT_DIR$/MA_Project-side/analysis_functions.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MA_Project-side/test.py" beforeDir="false" afterPath="$PROJECT_DIR$/MA_Project-side/test.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -98,7 +96,7 @@
       <workItem from="1737564551864" duration="5636000" />
       <workItem from="1737626097412" duration="1208000" />
       <workItem from="1737640653290" duration="5758000" />
-      <workItem from="1737739772793" duration="1262000" />
+      <workItem from="1737739772793" duration="1367000" />
     </task>
     <task id="LOCAL-00001" summary="init">
       <option name="closed" value="true" />
@@ -156,7 +154,15 @@
       <option name="project" value="LOCAL" />
       <updated>1737649905499</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Standardized and finalized data storage for all functions!">
+      <option name="closed" value="true" />
+      <created>1737741061599</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1737741061599</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
