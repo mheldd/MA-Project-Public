@@ -3,7 +3,7 @@ import random
 
 
 def conv_logging(ql_tables, observations, states, actions, env):
-    check_duration = 15
+    check_duration = 30
     agents = env.possible_agents
     actions = actions
 
@@ -37,7 +37,7 @@ def impulse_response(ql_tables, observations, states, actions, env, dev_action, 
     deviator = agents[0]
     q_player = agents[1]
 
-    conv_check_duration = 15
+    conv_check_duration = 150
     response_check_duration = 150
     total_duration = conv_check_duration+response_check_duration
     record = np.zeros((total_duration, 2), dtype=np.int64)
@@ -62,8 +62,14 @@ def impulse_response(ql_tables, observations, states, actions, env, dev_action, 
     return record
 
 #Function for the exploitation analysis. Gets called when a session is converged.
-def explo_test(ql_tables, observations, states, actions, env, dev_action, random_strat):
-    conv_check_duration = 15
+def explo_test(ql_tables, observations, states, actions, env, dev_action):
+
+    if dev_action == 99:
+        random_strat = True
+    else:
+        random_strat = False
+
+    conv_check_duration = 150
     response_check_duration = 150
     total_check_duration = conv_check_duration + response_check_duration
     record = np.zeros((total_check_duration+2, 2), dtype=np.int64)

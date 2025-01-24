@@ -11,23 +11,33 @@ from multiprocessing import Manager
 # nash: 4.683105308334808
 # average: 5.930776309195112
 
-ALPHA = [0.1, 0.125]#, 0.15]
-#BETA = [2*(10 ** (-5)), 10 ** (-5), 7*(10 ** (-6))]
-BETA = [10**(-3), 2*(10**(-5))]
+ALPHA = [0.1, 0.125]  # , 0.15]
+# BETA = [2*(10 ** (-5)), 10 ** (-5), 7*(10 ** (-6))]
+BETA = [10 ** (-3), 2 * (10 ** (-5))]
+Q = [99, 0]
+DEV_ACTIONS = [1, 14]
+DURATIONS = [5, 10, 25]
+DEV_STRATS = [1, 99]
+
+
 DELTA = 0.95
-Q_FILL_VALUE = 5.930776309195112
 NUM_PRICES = 15
 NUM_OBS = NUM_PRICES ** 2
 
 
 
-def run_session(session_id, env, alpha, beta, imp_res, exploit, dev_action, dev_duration, random_strat, storage):
+def run_session(session_id, env, alpha, beta, imp_res, exploit, dev_action, dev_duration, q_val, storage):
+
+    if q == 99:
+        c_indic = True
+    else:
+        c_indic = False
 
     observations, infos = env.reset()
     agents = env.possible_agents
 
     ##initialize q_matrices
-    ql_tables = {agent: ql_agent.QLAgent(env, alpha=alpha, beta=beta, delta=DELTA, q_init=Q_FILL_VALUE, c_init=True)
+    ql_tables = {agent: ql_agent.QLAgent(env, alpha=alpha, beta=beta, delta=DELTA, q_init=q_val, c_init=c_indic)
                  for agent in agents}
 
     ##initalize actions outside action space. Will produce error if this is used.
@@ -61,7 +71,7 @@ def run_session(session_id, env, alpha, beta, imp_res, exploit, dev_action, dev_
                 env.agents = []
 
             elif exploit:
-                output = analysis_functions.explo_test(ql_tables, observations, states, actions, env, dev_action, random_strat)
+                output = analysis_functions.explo_test(ql_tables, observations, states, actions, env, dev_action)
                 env.agents = []
 
             else:
@@ -82,7 +92,7 @@ def run_session(session_id, env, alpha, beta, imp_res, exploit, dev_action, dev_
 
 
 
-def main(alpha, beta, imp_res, exploit, dev_action, dev_duration, random_strat, num_sessions):
+def main(alpha, beta, imp_res, exploit, dev_action, dev_duration, q_val, num_sessions):
 
     env = env_pl_disc.parallel_env(render_mode=None, num_prices=NUM_PRICES)
 
@@ -91,7 +101,7 @@ def main(alpha, beta, imp_res, exploit, dev_action, dev_duration, random_strat, 
         with multiprocessing.Pool(processes=num_sessions) as pool:
             pool.starmap(
                 run_session,
-                [(i, env, alpha, beta, imp_res, exploit, dev_action, dev_duration, random_strat, storage) for i in range(num_sessions)],
+                [(i, env, alpha, beta, imp_res, exploit, dev_action, dev_duration, q_val, storage) for i in range(num_sessions)],
             )
 
         results = np.vstack(storage)
@@ -102,26 +112,45 @@ def main(alpha, beta, imp_res, exploit, dev_action, dev_duration, random_strat, 
 
 if __name__ == "__main__":
 
-    #data = main(alpha=0.125, beta=2*(10 ** (-5)), imp_res=False, exploit=False, dev_action = 0, random_strat = False, num_sessions = 6)
-    #print(data)
 
-    #basic looping through parameters
-    #for a in ALPHA:
-        #for b in BETA:
-            #data = main(alpha=a, beta=b, imp_res=False, exploit=False, dev_action=0, random_strat=False, num_sessions=2)
-            #np.savetxt(f"results_A/a_{a}_b_{b}_all.csv", data, delimiter=",")
+   ####Convergence Experiment. looping through all alphas and betas and both types of q initializations
+    for a in ALPHA:
+        for b in BETA:
+            for q in Q:
+                data = main(alpha=a, beta=b, imp_res=False, exploit=False, dev_action=1, dev_duration= 1, q_val = q, num_sessions=2)
+                np.savetxt(f"results_conv/a_{a}_b_{b}_q_{q}_all.csv", data, delimiter=",")
 
+    ####One Period deviation experiment. Looping through different betas and the price levels which are deviated to
+    for b in BETA:
+        for da in DEV_ACTIONS:
+            data = main(alpha=0.125, beta=b, imp_res=True, exploit=False, dev_action=da, dev_duration=5, q_val=99, num_sessions=2)
+            np.savetxt(f"results_imp_res_one/b_{b}_devact_{da}_all.csv", data, delimiter=",")
+
+    ####Multiple period price deviation experiment. Looping through betas and the durations of the deviation.
+    for b in BETA:
+        for d in DURATIONS:
+            data = main(alpha=0.125, beta=b, imp_res=True, exploit=False, dev_action=1, dev_duration = 5, q_val = 99, num_sessions=2)
+            np.savetxt(f"results_imp_res_multi/b_{b}_dur_{d}_all.csv", data, delimiter=",")
+
+    ####Permanent deviation experiment. Looping through beta and the type of deviating strategy. (Either only 1 or [0,1,2] with equal probability)
+    for b in BETA:
+        for ds in DEV_STRATS:
+            data = main(alpha=0.125, beta=b, imp_res=False, exploit=True, dev_action=1, dev_duration= 1, q_val = 99, num_sessions=2)
+            np.savetxt(f"results_perm_dev/b_{b}_devstrat_{ds}_all.csv", data, delimiter=",")
+
+
+
+################################################################################################################
     #create pilot data for each experiment
-    a = 0.125
-    b = 2*(10**(-5))
+
 
     ##convergence
     #data = main(alpha=a, beta=b, imp_res=False, exploit=False, dev_action=1, dev_duration= 1, random_strat=False, num_sessions=2)
     #np.savetxt(f"results_conv/a_{a}_b_{b}_all.csv", data, delimiter=",", fmt='%d')
 
     ##impulse response
-    data = main(alpha=a, beta=b, imp_res=True, exploit=False, dev_action=1, dev_duration = 5, random_strat=False, num_sessions=2)
-    np.savetxt(f"results_imp_res/a_{a}_b_{b}_all.csv", data, delimiter=",", fmt='%d')
+    #data = main(alpha=a, beta=b, imp_res=True, exploit=False, dev_action=1, dev_duration = 5, random_strat=False, num_sessions=2)
+    #np.savetxt(f"results_imp_res/a_{a}_b_{b}_all.csv", data, delimiter=",", fmt='%d')
 
     ##permanent deviation
     #data = main(alpha=a, beta=b, imp_res=False, exploit=True, dev_action=1, dev_duration= 1, random_strat=False, num_sessions=2)
