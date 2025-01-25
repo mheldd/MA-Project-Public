@@ -20,6 +20,7 @@ my = 1/4
 Cost = 1
 delta = 0.95
 MOVESc = np.linspace(LBOUND, HBOUND, NUM_PRICES)
+print(MOVESc)
 
 list = []
 

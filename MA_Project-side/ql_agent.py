@@ -47,6 +47,7 @@ class QLAgent:
                 self.q_values[:, i] = it_list[i]
 
 
+
     ##function to either choose a random action or the best action based on the q-matrice depending on exploration
     def get_action(self, observation):
         self.num_moves += 1

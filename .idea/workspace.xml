@@ -6,7 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="e0674133-00d5-4ab9-b2d9-26747e2c765e" name="Changes" comment="Further preparations for experiment. Added q_init input removed random strat input and put it into dev_actions. Created readytorun loops for the Experiment in main.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MA_Project-side/analysis_functions.py" beforeDir="false" afterPath="$PROJECT_DIR$/MA_Project-side/analysis_functions.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MA_Project-side/env_pl_disc.py" beforeDir="false" afterPath="$PROJECT_DIR$/MA_Project-side/env_pl_disc.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MA_Project-side/playground.py" beforeDir="false" afterPath="$PROJECT_DIR$/MA_Project-side/playground.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MA_Project-side/ql_agent.py" beforeDir="false" afterPath="$PROJECT_DIR$/MA_Project-side/ql_agent.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MA_Project-side/test.py" beforeDir="false" afterPath="$PROJECT_DIR$/MA_Project-side/test.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -99,7 +101,8 @@
       <workItem from="1737626097412" duration="1208000" />
       <workItem from="1737640653290" duration="5758000" />
       <workItem from="1737739772793" duration="1402000" />
-      <workItem from="1737741196203" duration="38000" />
+      <workItem from="1737741196203" duration="127000" />
+      <workItem from="1737816945756" duration="6680000" />
     </task>
     <task id="LOCAL-00001" summary="init">
       <option name="closed" value="true" />
@@ -173,7 +176,15 @@
       <option name="project" value="LOCAL" />
       <updated>1737741169285</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="Further preparations for experiment. Added q_init input removed random strat input and put it into dev_actions. Created readytorun loops for the Experiment in main.">
+      <option name="closed" value="true" />
+      <created>1737741245473</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1737741245473</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -194,7 +205,7 @@
     <SUITE FILE_PATH="coverage/MA$ql_multiproc.coverage" NAME="ql_multiproc Coverage Results" MODIFIED="1736592564049" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/MA_Project-side" />
     <SUITE FILE_PATH="coverage/MA$single_sesh.coverage" NAME="single_sesh Coverage Results" MODIFIED="1736450334505" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/MA_Project-side" />
     <SUITE FILE_PATH="coverage/MA$analysis_functions.coverage" NAME="analysis_functions Coverage Results" MODIFIED="1737389444543" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/MA_Project-side" />
-    <SUITE FILE_PATH="coverage/MA$test.coverage" NAME="test Coverage Results" MODIFIED="1737645094875" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/MA_Project-side" />
-    <SUITE FILE_PATH="coverage/MA$playground.coverage" NAME="playground Coverage Results" MODIFIED="1737388686604" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/MA_Project-side" />
+    <SUITE FILE_PATH="coverage/MA$test.coverage" NAME="test Coverage Results" MODIFIED="1737820543445" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/MA_Project-side" />
+    <SUITE FILE_PATH="coverage/MA$playground.coverage" NAME="playground Coverage Results" MODIFIED="1737820938341" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/MA_Project-side" />
   </component>
 </project>
