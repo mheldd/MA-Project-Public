@@ -98,7 +98,7 @@ def explo_test(ql_tables, observations, states, actions, env, dev_action):
             actions[q_agent] = ql_tables[q_agent].get_action(observations[q_agent])
             ql_tables[q_agent].decay_epsilon()
             if random_strat:
-                actions[exploit_agent] = random.randint(0, 2)
+                actions[exploit_agent] = random.randint(0, 4)
             else:
                 actions[exploit_agent] = dev_action
 

@@ -4,11 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e0674133-00d5-4ab9-b2d9-26747e2c765e" name="Changes" comment="Further preparations for experiment. Added q_init input removed random strat input and put it into dev_actions. Created readytorun loops for the Experiment in main.">
+    <list default="true" id="e0674133-00d5-4ab9-b2d9-26747e2c765e" name="Changes" comment="Some more preparations and tests.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MA_Project-side/env_pl_disc.py" beforeDir="false" afterPath="$PROJECT_DIR$/MA_Project-side/env_pl_disc.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MA_Project-side/playground.py" beforeDir="false" afterPath="$PROJECT_DIR$/MA_Project-side/playground.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MA_Project-side/ql_agent.py" beforeDir="false" afterPath="$PROJECT_DIR$/MA_Project-side/ql_agent.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MA_Project-side/analysis_functions.py" beforeDir="false" afterPath="$PROJECT_DIR$/MA_Project-side/analysis_functions.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MA_Project-side/test.py" beforeDir="false" afterPath="$PROJECT_DIR$/MA_Project-side/test.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -102,7 +100,8 @@
       <workItem from="1737640653290" duration="5758000" />
       <workItem from="1737739772793" duration="1402000" />
       <workItem from="1737741196203" duration="127000" />
-      <workItem from="1737816945756" duration="6680000" />
+      <workItem from="1737816945756" duration="6697000" />
+      <workItem from="1737976445199" duration="2479000" />
     </task>
     <task id="LOCAL-00001" summary="init">
       <option name="closed" value="true" />
@@ -184,7 +183,15 @@
       <option name="project" value="LOCAL" />
       <updated>1737741245473</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="Some more preparations and tests.">
+      <option name="closed" value="true" />
+      <created>1737830229015</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1737830229015</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -197,7 +204,8 @@
     <MESSAGE value="Improved data storage. Added loop through parameters in main. Does not work yet." />
     <MESSAGE value="Standardized and finalized data storage for all functions!" />
     <MESSAGE value="Further preparations for experiment. Added q_init input removed random strat input and put it into dev_actions. Created readytorun loops for the Experiment in main." />
-    <option name="LAST_COMMIT_MESSAGE" value="Further preparations for experiment. Added q_init input removed random strat input and put it into dev_actions. Created readytorun loops for the Experiment in main." />
+    <MESSAGE value="Some more preparations and tests." />
+    <option name="LAST_COMMIT_MESSAGE" value="Some more preparations and tests." />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/MA$logging.coverage" NAME="logging Coverage Results" MODIFIED="1736590039760" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/MA_Project-side" />

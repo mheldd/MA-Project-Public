@@ -8,17 +8,13 @@ import multiprocessing
 import random
 from multiprocessing import Manager
 
-# nash: 4.683105308334808
-# average: 5.930776309195112
-#forgit
 
-ALPHA = [0.1, 0.15]  # , 0.15]
-# BETA = [2*(10 ** (-5)), 10 ** (-5), 7*(10 ** (-6))]
-BETA = [(10 ** (-5))]
+ALPHA = [0.1, 0.125, 0.15]
+BETA = [2*(10 ** (-5)), (10 ** (-5)), 7*(10 ** (-6))]
 Q = [99, 0]
-DEV_ACTIONS = [1, 14]
-DURATIONS = [5, 20]
-DEV_STRATS = [1, 99]
+DEV_ACTIONS = [0, 1, 2, 3, 14]
+DURATIONS = [10, 25]
+DEV_STRATS = [1, 2, 3, 99]
 
 
 DELTA = 0.95
@@ -123,26 +119,22 @@ if __name__ == "__main__":
     for a in ALPHA:
         for b in BETA:
             for q in Q:
-                data = main(alpha=a, beta=b, imp_res=False, exploit=False, dev_action=1, dev_duration= 1, q_val = q, num_sessions=2)
+                data = main(alpha=a, beta=b, imp_res=False, exploit=False, dev_action=1, dev_duration= 1, q_val = q, num_sessions=84)
                 np.savetxt(f"results_conv/a_{a}_b_{b}_q_{q}_all.csv", data, delimiter=",", fmt='%d')
-
-    ####One Period deviation experiment. Looping through different betas and the price levels which are deviated to
-    for b in BETA:
-        for da in DEV_ACTIONS:
-            data = main(alpha=0.125, beta=b, imp_res=True, exploit=False, dev_action=da, dev_duration=1, q_val=99, num_sessions=2)
-            np.savetxt(f"results_imp_res_one/b_{b}_devact_{da}_all.csv", data, delimiter=",", fmt='%d')
 
     ####Multiple period price deviation experiment. Looping through betas and the durations of the deviation.
     for b in BETA:
         for du in DURATIONS:
-            data = main(alpha=0.125, beta=b, imp_res=True, exploit=False, dev_action=1, dev_duration = du, q_val = 99, num_sessions=2)
-            np.savetxt(f"results_imp_res_multi/b_{b}_dur_{du}_all.csv", data, delimiter=",", fmt='%d')
+            for da in DEV_ACTIONS:
+                data = main(alpha=0.125, beta=b, imp_res=True, exploit=False, dev_action=da, dev_duration = du, q_val = 99, num_sessions=84)
+                np.savetxt(f"results_imp_res_multi/b_{b}_dur_{du}_devact_{da}_all.csv", data, delimiter=",", fmt='%d')
 
     ####Permanent deviation experiment. Looping through beta and the type of deviating strategy. (Either only 1 or [0,1,2] with equal probability)
-    for b in BETA:
-        for ds in DEV_STRATS:
-            data = main(alpha=0.125, beta=b, imp_res=False, exploit=True, dev_action=ds, dev_duration= 1, q_val = 99, num_sessions=2)
-            np.savetxt(f"results_perm_dev/b_{b}_devstrat_{ds}_all.csv", data, delimiter=",", fmt='%d')
+    for a in ALPHA:
+        for b in BETA:
+            for ds in DEV_STRATS:
+                data = main(alpha=a, beta=b, imp_res=False, exploit=True, dev_action=ds, dev_duration= 1, q_val = 99, num_sessions=84)
+                np.savetxt(f"results_perm_dev/a_{a}b_{b}_devstrat_{ds}_all.csv", data, delimiter=",", fmt='%d')
 
 
 
