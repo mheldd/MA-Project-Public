@@ -79,7 +79,6 @@ class parallel_env(ParallelEnv):
             demand = (np.e ** ((self.a - pi) / self.my)) / (
                         np.e ** ((self.a - pi) / self.my) + np.e ** ((self.a - pj) / self.my)+1)
             rewards[agent] = float(demand * (pi - self.c))
-            print(pi, pj, demand, rewards[agent])
 
         observations = {agent: self.observation_mapping[(actions[agent], actions[self.agents[1 - self.agent_name_mapping[agent]]])] for agent in self.agents}
 

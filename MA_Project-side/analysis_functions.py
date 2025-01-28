@@ -43,7 +43,7 @@ def impulse_response(ql_tables, observations, states, actions, env, dev_action, 
     record = np.zeros((total_duration, 2), dtype=np.int64)
 
     for i in range(0, total_duration):
-        if conv_check_duration < i <= conv_check_duration+dev_duration:
+        if conv_check_duration - 1 < i <= conv_check_duration+dev_duration-1:
             actions[deviator] = dev_action
             actions[q_player] = ql_tables[q_player].get_action(
                 observations[q_player])

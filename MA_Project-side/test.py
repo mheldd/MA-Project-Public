@@ -8,11 +8,13 @@ import multiprocessing
 import random
 from multiprocessing import Manager
 
+import time
 
 ALPHA = [0.1, 0.125, 0.15]
 BETA = [2*(10 ** (-5)), (10 ** (-5)), 7*(10 ** (-6))]
 Q = [99, 0]
-DEV_ACTIONS = [0, 1, 2, 3, 14]
+DEV_ACTIONS = [0, 1, 2, 14]
+MULTI_DEV_ACTIONS = [0, 1, 2, 3]
 DURATIONS = [10, 25]
 DEV_STRATS = [1, 2, 3, 99]
 
@@ -37,7 +39,6 @@ def run_session(session_id, env, alpha, beta, imp_res, exploit, dev_action, dev_
     ##initialize q_matrices
     ql_tables = {agent: ql_agent.QLAgent(env, alpha=alpha, beta=beta, delta=DELTA, q_init=q_val, c_init=c_indic)
                  for agent in agents}
-    print(ql_tables[agents[0]].q_values)
 
     ##initalize actions outside action space. Will produce error if this is used.
     actions = {agent: -1 for agent in agents}
@@ -114,29 +115,51 @@ def main(alpha, beta, imp_res, exploit, dev_action, dev_duration, q_val, num_ses
 
 if __name__ == "__main__":
 
+    CONV = False
+    SINGLE = True
+    MULTI = False
+    PERMA = False
 
+    start_time = time.time()
    ####Convergence Experiment. looping through all alphas and betas and both types of q initializations
-    for a in ALPHA:
+    if CONV:
+        for a in ALPHA:
+            for b in BETA:
+                for q in Q:
+                    data = main(alpha=a, beta=b, imp_res=False, exploit=False, dev_action=1, dev_duration= 1, q_val = 99, num_sessions=84)
+                    np.savetxt(f"results_conv/a_{a}_b_{b}_q_{99}_all.csv", data, delimiter=",", fmt='%d')
+
+    ####One period price deviation experiment. Looping through betas and the durations of the deviation.
+    if SINGLE:
         for b in BETA:
-            for q in Q:
-                data = main(alpha=a, beta=b, imp_res=False, exploit=False, dev_action=1, dev_duration= 1, q_val = q, num_sessions=84)
-                np.savetxt(f"results_conv/a_{a}_b_{b}_q_{q}_all.csv", data, delimiter=",", fmt='%d')
+            for da in DEV_ACTIONS:
+                data = main(alpha=0.125, beta=b, imp_res=True, exploit=False, dev_action=da, dev_duration = 1, q_val = 99, num_sessions=84)
+                np.savetxt(f"results_imp_res_multi/b_{b}_dur_1_devact_{da}_all.csv", data, delimiter=",", fmt='%d')
 
     ####Multiple period price deviation experiment. Looping through betas and the durations of the deviation.
-    for b in BETA:
-        for du in DURATIONS:
-            for da in DEV_ACTIONS:
-                data = main(alpha=0.125, beta=b, imp_res=True, exploit=False, dev_action=da, dev_duration = du, q_val = 99, num_sessions=84)
-                np.savetxt(f"results_imp_res_multi/b_{b}_dur_{du}_devact_{da}_all.csv", data, delimiter=",", fmt='%d')
+    if MULTI:
+        for b in BETA:
+            for du in DURATIONS:
+                for da in MULTI_DEV_ACTIONS:
+                    data = main(alpha=0.125, beta=b, imp_res=True, exploit=False, dev_action=da, dev_duration = du, q_val = 99, num_sessions=84)
+                    np.savetxt(f"results_imp_res_multi/b_{b}_dur_{du}_devact_{da}_all.csv", data, delimiter=",", fmt='%d')
 
     ####Permanent deviation experiment. Looping through beta and the type of deviating strategy. (Either only 1 or [0,1,2] with equal probability)
-    for a in ALPHA:
-        for b in BETA:
-            for ds in DEV_STRATS:
-                data = main(alpha=a, beta=b, imp_res=False, exploit=True, dev_action=ds, dev_duration= 1, q_val = 99, num_sessions=84)
-                np.savetxt(f"results_perm_dev/a_{a}b_{b}_devstrat_{ds}_all.csv", data, delimiter=",", fmt='%d')
+    if PERMA:
+        for a in ALPHA:
+            for b in BETA:
+                for ds in DEV_STRATS:
+                    data = main(alpha=a, beta=b, imp_res=False, exploit=True, dev_action=ds, dev_duration= 1, q_val = 99, num_sessions=1)
+                    np.savetxt(f"results_perm_dev/a_{a}b_{b}_devstrat_{ds}_all.csv", data, delimiter=",", fmt='%d')
 
+    # End the timer
+    end_time = time.time()
 
+    # Calculate the duration
+    duration = end_time - start_time
+
+    # Print the duration
+    print(f"Simulation took {duration} seconds")
 
 ################################################################################################################
     #create pilot data for each experiment
