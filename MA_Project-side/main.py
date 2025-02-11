@@ -10,20 +10,26 @@ from multiprocessing import Manager
 
 import time
 
+##Define Parameters
+
 ALPHA = [0.1, 0.125, 0.15]
 BETA = [2*(10 ** (-5)), (10 ** (-5)), 7*(10 ** (-6))]
 Q = [99, 0]
 DEV_ACTIONS = [0, 1, 2, 14]
-MULTI_DEV_ACTIONS = [0, 1, 2, 3]
-DURATIONS = [10, 25]
-DEV_STRATS = [1, 2, 3, 99]
+MULTI_DEV_ACTIONS = [3]#0, 1, 2, 3]
+DURATIONS = [1]#10, 25]
+DEV_STRATS = [0, 1, 2, 3, 99]
 
 
 DELTA = 0.95
 NUM_PRICES = 15
 NUM_OBS = NUM_PRICES ** 2
 
-
+##Set the experiments you want to run to True
+CONV = False
+SINGLE = False
+MULTI = True
+PERMA = True
 
 def run_session(session_id, env, alpha, beta, imp_res, exploit, dev_action, dev_duration, q_val, storage):
 
@@ -115,10 +121,7 @@ def main(alpha, beta, imp_res, exploit, dev_action, dev_duration, q_val, num_ses
 
 if __name__ == "__main__":
 
-    CONV = False
-    SINGLE = True
-    MULTI = False
-    PERMA = False
+
 
     start_time = time.time()
    ####Convergence Experiment. looping through all alphas and betas and both types of q initializations
@@ -146,11 +149,11 @@ if __name__ == "__main__":
 
     ####Permanent deviation experiment. Looping through beta and the type of deviating strategy. (Either only 1 or [0,1,2] with equal probability)
     if PERMA:
-        for a in ALPHA:
-            for b in BETA:
-                for ds in DEV_STRATS:
-                    data = main(alpha=a, beta=b, imp_res=False, exploit=True, dev_action=ds, dev_duration= 1, q_val = 99, num_sessions=1)
-                    np.savetxt(f"results_perm_dev/a_{a}b_{b}_devstrat_{ds}_all.csv", data, delimiter=",", fmt='%d')
+        #for a in ALPHA:
+        for b in BETA:
+            for ds in DEV_STRATS:
+                data = main(alpha=0.125, beta=b, imp_res=False, exploit=True, dev_action=ds, dev_duration= 1, q_val = 99, num_sessions=84)
+                np.savetxt(f"results_perm_dev/a_{0.125}b_{b}_devstrat_{ds}_all.csv", data, delimiter=",", fmt='%d')
 
     # End the timer
     end_time = time.time()
@@ -161,21 +164,8 @@ if __name__ == "__main__":
     # Print the duration
     print(f"Simulation took {duration} seconds")
 
-################################################################################################################
-    #create pilot data for each experiment
-
-
-    ##convergence
-    #data = main(alpha=a, beta=b, imp_res=False, exploit=False, dev_action=1, dev_duration= 1, random_strat=False, num_sessions=2)
-    #np.savetxt(f"results_conv/a_{a}_b_{b}_all.csv", data, delimiter=",", fmt='%d')
-
-    ##impulse response
-    #data = main(alpha=a, beta=b, imp_res=True, exploit=False, dev_action=1, dev_duration = 5, random_strat=False, num_sessions=2)
-    #np.savetxt(f"results_imp_res/a_{a}_b_{b}_all.csv", data, delimiter=",", fmt='%d')
-
-    ##permanent deviation
-    #data = main(alpha=a, beta=b, imp_res=False, exploit=True, dev_action=1, dev_duration= 1, random_strat=False, num_sessions=2)
-    #np.savetxt(f"results_perm_dev/a_{a}_b_{b}_all.csv", data, delimiter=",", fmt='%d')
+#End
+#########################################
 
 
 
