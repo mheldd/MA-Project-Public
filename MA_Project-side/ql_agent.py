@@ -17,7 +17,7 @@ class QLAgent:
         self.converged = False
         self.conv_threshhold = 100000
 
-        ##initalizing the q_values as in the Calvano 2020 paper.
+        ##initalizing the q_values as in the Calvano 2020 paper.#
         if c_init:
             eta = 0.1
             pnash = 1.47293

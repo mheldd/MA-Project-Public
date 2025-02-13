@@ -10,7 +10,7 @@ from multiprocessing import Manager
 
 import time
 
-##Define Parameters
+##Define Parameters#
 
 ALPHA = [0.1, 0.125, 0.15]
 BETA = [2*(10 ** (-5)), (10 ** (-5)), 7*(10 ** (-6))]
@@ -26,10 +26,10 @@ NUM_PRICES = 15
 NUM_OBS = NUM_PRICES ** 2
 
 ##Set the experiments you want to run to True
-CONV = False
+CONV = True
 SINGLE = False
-MULTI = True
-PERMA = True
+MULTI = False
+PERMA = False
 
 def run_session(session_id, env, alpha, beta, imp_res, exploit, dev_action, dev_duration, q_val, storage):
 
@@ -128,9 +128,9 @@ if __name__ == "__main__":
     if CONV:
         for a in ALPHA:
             for b in BETA:
-                for q in Q:
-                    data = main(alpha=a, beta=b, imp_res=False, exploit=False, dev_action=1, dev_duration= 1, q_val = 99, num_sessions=84)
-                    np.savetxt(f"results_conv/a_{a}_b_{b}_q_{99}_all.csv", data, delimiter=",", fmt='%d')
+                #for q in Q:
+                data = main(alpha=a, beta=b, imp_res=False, exploit=False, dev_action=1, dev_duration= 1, q_val = 0, num_sessions=84)
+                np.savetxt(f"results_conv/a_{a}_b_{b}_q_{0}_all.csv", data, delimiter=",", fmt='%d')
 
     ####One period price deviation experiment. Looping through betas and the durations of the deviation.
     if SINGLE:

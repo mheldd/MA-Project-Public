@@ -1,6 +1,5 @@
 import numpy as np
 import random
-#forgit
 
 def conv_logging(ql_tables, observations, states, actions, env):
     check_duration = 30
@@ -82,9 +81,14 @@ def explo_test(ql_tables, observations, states, actions, env, dev_action):
     periods = 0
     end_count = 0
     end_crit = 1000
-    end_threshold = 1
+
+    if dev_action <= 1:
+        end_check = [0, 1, 2]
+    else:
+        end_check = [1, 2, 3]
+
     if random_strat:
-        end_threshold = 2
+        end_check = [0, 1, 2, 3]
 
     tot_rewards = {a: 0 for a in agents}
 
@@ -98,7 +102,7 @@ def explo_test(ql_tables, observations, states, actions, env, dev_action):
             actions[q_agent] = ql_tables[q_agent].get_action(observations[q_agent])
             ql_tables[q_agent].decay_epsilon()
             if random_strat:
-                actions[exploit_agent] = random.randint(0, 4)
+                actions[exploit_agent] = random.randint(0, 3)
             else:
                 actions[exploit_agent] = dev_action
 
@@ -116,7 +120,7 @@ def explo_test(ql_tables, observations, states, actions, env, dev_action):
 
         states = observations
 
-        if actions[q_agent] <= end_threshold:
+        if actions[q_agent] in end_check:
             end_count += 1
         else:
             end_count = 0
