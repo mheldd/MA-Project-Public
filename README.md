@@ -1,4 +1,4 @@
-This repository contains code for simulations and data analyses that I carried out as part of my Master´s Thesis on algorithmic collusion.
+This repository contains code for the simulations and data analyses that I carried out as part of my Master´s Thesis on algorithmic collusion.
 
 The simulation code consists of 4 connected .py files in the Py-Code folder. NumPy and PettingZoo are required.
 
