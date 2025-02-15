@@ -4,11 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e0674133-00d5-4ab9-b2d9-26747e2c765e" name="Changes" comment="Final preparations">
+    <list default="true" id="e0674133-00d5-4ab9-b2d9-26747e2c765e" name="Changes" comment="Public Version">
+      <change afterPath="$PROJECT_DIR$/MA_Project-side/R/ma_playground.R" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MA_Project-side/analysis_functions.py" beforeDir="false" afterPath="$PROJECT_DIR$/MA_Project-side/analysis_functions.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MA_Project-side/env_pl_disc.py" beforeDir="false" afterPath="$PROJECT_DIR$/MA_Project-side/env_pl_disc.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MA_Project-side/test.py" beforeDir="false" afterPath="$PROJECT_DIR$/MA_Project-side/test.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MA_Project-side/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/MA_Project-side/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -25,7 +24,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="reorganised" />
+        <entry key="$PROJECT_DIR$" value="ql" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -55,6 +54,8 @@
   &quot;keyToString&quot;: {
     &quot;Python.analysis_functions.executor&quot;: &quot;Run&quot;,
     &quot;Python.logging.executor&quot;: &quot;Run&quot;,
+    &quot;Python.main.executor&quot;: &quot;Run&quot;,
+    &quot;Python.pg.executor&quot;: &quot;Run&quot;,
     &quot;Python.playground.executor&quot;: &quot;Run&quot;,
     &quot;Python.ql_agent.executor&quot;: &quot;Run&quot;,
     &quot;Python.ql_multiproc.executor&quot;: &quot;Run&quot;,
@@ -62,7 +63,7 @@
     &quot;Python.test.executor&quot;: &quot;Run&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;ql&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;public&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -71,6 +72,13 @@
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\manue\PycharmProjects\MA\MA_Project-side\results_imp_res_multi" />
+      <recent name="C:\Users\manue\PycharmProjects\MA\MA_Project-side" />
+      <recent name="C:\Users\manue\PycharmProjects\MA" />
+    </key>
+  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -105,7 +113,26 @@
       <workItem from="1737976445199" duration="2718000" />
       <workItem from="1737982549686" duration="4648000" />
       <workItem from="1738009290138" duration="1928000" />
-      <workItem from="1738064498641" duration="1019000" />
+      <workItem from="1738064498641" duration="1153000" />
+      <workItem from="1738086132298" duration="1096000" />
+      <workItem from="1738347018083" duration="36000" />
+      <workItem from="1738358855908" duration="4036000" />
+      <workItem from="1738597944851" duration="770000" />
+      <workItem from="1738600657118" duration="935000" />
+      <workItem from="1738663766355" duration="281000" />
+      <workItem from="1738686826713" duration="1787000" />
+      <workItem from="1738693022680" duration="273000" />
+      <workItem from="1738693442240" duration="922000" />
+      <workItem from="1738775658504" duration="2502000" />
+      <workItem from="1738856856249" duration="164000" />
+      <workItem from="1739264787015" duration="3380000" />
+      <workItem from="1739293923496" duration="69000" />
+      <workItem from="1739297140552" duration="1004000" />
+      <workItem from="1739436626630" duration="209000" />
+      <workItem from="1739465770276" duration="234000" />
+      <workItem from="1739468071515" duration="3070000" />
+      <workItem from="1739558707870" duration="32000" />
+      <workItem from="1739558807747" duration="2383000" />
     </task>
     <task id="LOCAL-00001" summary="init">
       <option name="closed" value="true" />
@@ -203,11 +230,38 @@
       <option name="project" value="LOCAL" />
       <updated>1737982262973</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="Corrected deviation timing in imp_res. Readded 1 period deviation experiment. Added timer. Added booleans for running different experiments.">
+      <option name="closed" value="true" />
+      <created>1738065582487</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1738065582487</updated>
+    </task>
+    <task id="LOCAL-00014" summary="Public Version">
+      <option name="closed" value="true" />
+      <created>1739436744876</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1739436744876</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="init" />
@@ -218,15 +272,19 @@
     <MESSAGE value="Further preparations for experiment. Added q_init input removed random strat input and put it into dev_actions. Created readytorun loops for the Experiment in main." />
     <MESSAGE value="Some more preparations and tests." />
     <MESSAGE value="Final preparations" />
-    <option name="LAST_COMMIT_MESSAGE" value="Final preparations" />
+    <MESSAGE value="Corrected deviation timing in imp_res. Readded 1 period deviation experiment. Added timer. Added booleans for running different experiments." />
+    <MESSAGE value="Public Version" />
+    <option name="LAST_COMMIT_MESSAGE" value="Public Version" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/MA$logging.coverage" NAME="logging Coverage Results" MODIFIED="1736590039760" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/MA_Project-side" />
     <SUITE FILE_PATH="coverage/MA$ql_agent.coverage" NAME="ql_agent Coverage Results" MODIFIED="1736416316962" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/MA_Project-side" />
     <SUITE FILE_PATH="coverage/MA$ql_multiproc.coverage" NAME="ql_multiproc Coverage Results" MODIFIED="1736592564049" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/MA_Project-side" />
     <SUITE FILE_PATH="coverage/MA$single_sesh.coverage" NAME="single_sesh Coverage Results" MODIFIED="1736450334505" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/MA_Project-side" />
+    <SUITE FILE_PATH="coverage/MA$main.coverage" NAME="main Coverage Results" MODIFIED="1739558858527" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/MA_Project-side" />
     <SUITE FILE_PATH="coverage/MA$analysis_functions.coverage" NAME="analysis_functions Coverage Results" MODIFIED="1737389444543" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/MA_Project-side" />
-    <SUITE FILE_PATH="coverage/MA$test.coverage" NAME="test Coverage Results" MODIFIED="1738065217246" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/MA_Project-side" />
-    <SUITE FILE_PATH="coverage/MA$playground.coverage" NAME="playground Coverage Results" MODIFIED="1737820938341" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/MA_Project-side" />
+    <SUITE FILE_PATH="coverage/MA$pg.coverage" NAME="pg Coverage Results" MODIFIED="1739272523242" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/MA_Project-side" />
+    <SUITE FILE_PATH="coverage/MA$test.coverage" NAME="test Coverage Results" MODIFIED="1738693498683" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/MA_Project-side" />
+    <SUITE FILE_PATH="coverage/MA$playground.coverage" NAME="playground Coverage Results" MODIFIED="1738693026053" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/MA_Project-side" />
   </component>
 </project>
