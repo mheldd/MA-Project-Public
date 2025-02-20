@@ -1,7 +1,7 @@
 library(dplyr)
 library(knitr)
 
-
+profit(pimono,pimono)
 #clear workspace
 rm(list = ls())
 
@@ -9,7 +9,7 @@ rm(list = ls())
 source("C:/Users/manue/OneDrive/Dokumente/MA/R/ma_main.R")
 
 ##load data
-setwd("C:/Users/manue/PycharmProjects/MA/MA_Project-side/results_conv")
+setwd("C:/Users/manue/PycharmProjects/MA/Py-Code/results_conv")
 
 
 conv_data <- list(
@@ -25,7 +25,7 @@ conv_data <- list(
 )
 
 
-
+profit(1.47,1.47)
 
 ##data transformation
 for (i in c(1:length(conv_data))){
@@ -68,6 +68,17 @@ for (d in conv_data){
   session_df_list <- append(session_df_list, list(session_df))
 }
 
+################
+###Find longest and shortest session
+most <- c()
+least <- c()
+for (x in session_df_list){
+  most <- append(most, max(x$num_periods))
+  least <- append(least, min(x$num_periods))
+}
+print(max(most))
+print(min(least))
+##############
 ###how many sessions show no cycle?
 
 
@@ -88,8 +99,14 @@ for (s in session_df_list){
   av_df <- rbind(av_df, data.frame(profit_average = av_av_profit, price_average = av_av_price, average_periods = av_periods, average_cycle_length = av_cycle, no_cycle = no_cycle))
 }
 
-av_df
+###number of sessions with no cycle
+no_cycle <- av_df$no_cycle
+print(no_cycle)
 
+av_df$no_cycle <- NULL
+
+
+###Declare row names for latex table
 parameter_names <- c(
   "$\\alpha = 0.1, ~ \\beta = 2\\times10^{-5}$",
   "$\\alpha = 0.1, ~ \\beta = 10^{-5}$",
@@ -102,14 +119,15 @@ parameter_names <- c(
   "$\\alpha = 0.15, ~ \\beta = 7\\times10^{-6}$"
 )
 
-
+###Add number of observations as another column
 av_df <- av_df %>%
   add_column(parameters = parameter_names, .before = "profit_average") %>%
   add_column(n_sessions= 84, .after = "average_cycle_length")
 
+##Declare column names
 c_names <- c("Parameters", "Average Profit", "Average Price", "Average Periods", "Average Cycle Length", "Number of Sessions")
 
-
+##Create Latex Table
 kable(av_df, format = "latex", escape = FALSE, booktabs = TRUE, sep = "", align = "l|ccccc",
       col.names = c_names, caption = "An example table caption.")
 

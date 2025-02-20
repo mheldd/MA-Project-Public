@@ -53,6 +53,7 @@ discount <- function(profit_series){
   return(disc_sum)
 }
 
+profit(prices[10],prices[10])
 
 pinash <- profit(1.47293, 1.47293)
 pimono <- profit(1.92498, 1.92498)

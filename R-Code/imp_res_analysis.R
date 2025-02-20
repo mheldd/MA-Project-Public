@@ -5,7 +5,6 @@ library(knitr)
 library(patchwork)
 library(tibble)
 
-
 #clear workspace
 rm(list = ls())
 
@@ -13,7 +12,7 @@ rm(list = ls())
 source("C:/Users/manue/OneDrive/Dokumente/MA/R/ma_main.R")
 
 
-setwd("C:/Users/manue/PycharmProjects/MA/MA_Project-side/results_imp_res_multi")
+setwd("C:/Users/manue/PycharmProjects/MA/Py-Code/results_imp_res_multi")
 
 
 
@@ -92,10 +91,12 @@ for (data_file in imp_res_data){
 
 }
 
+###split in temporary and permanent deviation
+
 
 plot_list <- list()
-##Alternatively: coler = Series instead of linetype = Series
-for (i in c(2,5,6,11,7,12)){
+##Alternatively: coler = Series instead of linetype = Series c(2,5,6,11,7,12)
+for (i in c(1:15)){
   plt <- ggplot(plot_data[[i]], aes(x = Period, y = Price, color = Series)) +
           geom_line(size = 1) +
           theme(legend.position = "none") +
@@ -111,32 +112,63 @@ for (i in c(2,5,6,11,7,12)){
           ) 
   plot_list <- append(plot_list, list(plt))
 }
+
+##first figure
     
 setwd("C:/Users/manue/OneDrive/Dokumente/MA/Thesis_tex")
   
-plot_list[[1]] + plot_list[[2]]
+plot_list[[2]] + plot_list[[5]]
 
 ggsave("imp_res_1.pdf", width=6, height=4)
 
-plt_perma <- ggplot(plot_data[[17]], aes(x = Period, y = Price, color = Series)) +
-  geom_line(size = 1) +
-  theme(legend.position = "none") +
-  scale_x_continuous(name = "Period",
-                     limits = c(140, 290),
-                     breaks = seq(140, 290, by = 10),  # Positions for original data
-                     labels = seq(-10, 140, by = 10)) + 
-  ylim(0, 14) +
-  labs(
-    title = "",
-    x = "Time",
-    y = "Price"
-  ) 
+plot_list_perm <- list()
+
+for (i in c(16:19)){
+  plt <- ggplot(plot_data[[i]], aes(x = Period, y = Price, color = Series)) +
+    geom_line(size = 1) +
+    theme(legend.position = "none") +
+    scale_x_continuous(name = "Period",
+                       limits = c(140, 290),
+                       breaks = seq(140, 290, by = 10),  # Positions for original data
+                       labels = seq(-10, 140, by = 10)) + 
+    ylim(0, 14) +
+    labs(
+      title = "",
+      x = "Time",
+      y = "Price"
+    ) 
+  plot_list_perm <- append(plot_list_perm, list(plt))
+}
 
 
-(plot_list[[3]] | plot_list[[4]]) / plt_perma
+##2nd figure
+(plot_list[[7]] | plot_list[[12]]) / plot_list_perm[[2]]
 
 
-ggsave("imp_res_2.pdf", width=6, height=4)
+###3rd figure
+(plot_list[[11]] | plot_list[[12]]) /
+  (plot_list[[13]] | plot_list[[14]])
+
+ggsave("imp_res_3.pdf", width=6, height=4)
+
+
+
+###appendix
+(plot_list[[6]] | plot_list[[7]]) /
+  (plot_list[[8]] | plot_list[[9]])
+
+ggsave("imp_res_A1.pdf", width=6, height=4)
+
+plot_list_perm[[1]] /
+  plot_list_perm[[2]] /
+  plot_list_perm[[3]] /
+  plot_list_perm[[4]] 
+
+ggsave("imp_res_A2.pdf", width=5, height=8)
+  
+
+
+  
 
   
 
@@ -267,50 +299,5 @@ c_names <- c("Action", "Periods", "$\\frac{\\Delta_{pre}^D}{\\Delta_{post}^D}$",
 
 kable(df_full, format = "latex", escape = FALSE, digits = 3, booktabs = TRUE, sep = "", align = "ll|cccccc",
       col.names = c_names, caption = "An example table caption.")
-
-
-####################################
-####Table on duration till good strategy
-
-alphas <- c(0.1,0.125,0.15)
-betas <- c("1e-05", "2e-05", "7e-06")
-
-
-df_full <- data.frame(
-  alpha <- numeric(),
-  beta <- numeric(),
-  mean_periods <- integer()
-)
-
-for (a in alphas){
-  for (b in betas) {
-      file_name <- paste0("a_", a, "b_", b,"_devstrat_1_all.csv")
-      data <- read.csv(file_name, header = FALSE)
-      
-      num_periods_vec <- 0
-      
-      for (i in c(0: max_session_id)){
-        session_data <- filter(data, V3 == i)
-        num_periods_vec <- append(num_periods_vec, data$V1[301])
-      }
-      
-      mean_periods <- mean(num_periods_vec)
-      
-      df_full <- rbind(df_full, data.frame(alpha = a, beta = b, mean_periods = mean_periods))
-  }
-}
-
-
-df_full <- df_full %>%
-  group_by(beta, alpha) %>%
-  summarise(mean_periods = mean(mean_periods), .groups = 'drop') %>%
-  pivot_wider(names_from = alpha, values_from = mean_periods)
-
-c_names <- c("", "$\\alpha = 0.1$", "$\\alpha = 0.125$", "$\\alpha = 0.15$")
-
-df_full[, 1] <- c("$\\beta = 2\\times10^{-5}$", "$\\beta = 10^{-5}$", "$\\beta = 7\\times10^{-6}$")
-
-kable(df_full, format = "latex", escape = FALSE, booktabs = TRUE, digits = 0, sep = "",
-      col.names = c_names, align = "l|ccc", caption = "An example table caption.")
 
 
